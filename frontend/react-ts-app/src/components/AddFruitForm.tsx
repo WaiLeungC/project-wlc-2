@@ -1,18 +1,21 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 
-interface AddFruitFormProps {
-  addFruit: (fruitName: string) => void;
-}
+type AddFruitFormProps = {
+  addFruit: (fruitName: string) => void
+};
 
 const AddFruitForm = ({ addFruit }: AddFruitFormProps) => {
-  const [fruitName, setFruitName] = useState<string>('');
+  const [fruitName, setFruitName] = useState('');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (fruitName) {
-      addFruit(fruitName);
-      setFruitName('');
-    }
+    if (!fruitName) return;
+    addFruit(fruitName);
+    setFruitName('');
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFruitName(event.target.value);
   };
 
   return (
@@ -20,7 +23,7 @@ const AddFruitForm = ({ addFruit }: AddFruitFormProps) => {
       <input
         type="text"
         value={fruitName}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setFruitName(e.target.value)}
+        onChange={handleChange}
         placeholder="Enter fruit name"
       />
       <button type="submit">Add Fruit</button>
