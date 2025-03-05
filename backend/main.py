@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.items import router as items_router
+from routes.fruits import router as froot_router
 
 app = FastAPI()
 
@@ -14,7 +15,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(items_router)
+routers = [items_router, froot_router]
+
+for router in routers:
+    app.include_router(router)
 
 
 @app.get("/")
