@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from database import Base
+from database import Base, engine
 
 
 class User(Base):
@@ -17,3 +17,6 @@ class Post(Base):
     title = Column(String(50))
     content = Column(String(280))
     user_id = Column(Integer, ForeignKey("users.id"))
+
+
+Base.metadata.create_all(bind=engine)
