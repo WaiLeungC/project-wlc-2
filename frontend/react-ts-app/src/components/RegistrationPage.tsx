@@ -1,5 +1,6 @@
 import type React from "react"
 import { useState } from "react"
+import api from '../api.tsx';
 
 export default function RegistrationPage() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,9 @@ export default function RegistrationPage() {
     password: "",
     confirmPassword: "",
   })
+
+  const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
+  const [registrationFailed, setRegistrationFailed] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -70,19 +74,24 @@ export default function RegistrationPage() {
     return valid
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
 
     if (validateForm()) {
-      console.log("Form submitted:", formData)
-      alert("Registration successful!")
-
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      })
+      try {
+        await api.post("/users", formData)
+        setRegistrationSuccessful(true)
+        setRegistrationFailed(false)
+        setFormData({
+          username: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        })
+      } catch {
+        setRegistrationFailed(true)
+        setRegistrationSuccessful(false)
+      }
     }
   }
 
@@ -149,6 +158,9 @@ export default function RegistrationPage() {
 
         <button type="submit">Register</button>
       </form>
+
+      {registrationSuccessful && <p className="success">Registration is successful!</p>}
+      {registrationFailed && <p className="error">Registration failed!</p>}
 
       <p>Already have an account? <a href="#">Sign in</a></p>
     </div>

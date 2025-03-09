@@ -12,7 +12,14 @@ input {
   margin: 0.5rem;
 }
 
+p {
+  margin: 0.5rem;
+}
+
+p.success {
+  color: green;
+}
+
 p.error {
-  margin: 0;
   color: red;
 }
