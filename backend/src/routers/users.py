@@ -6,6 +6,6 @@ from database import db_dependency
 router = APIRouter()
 
 
-@router.post("/users/", status_code=status.HTTP_201_CREATED)
+@router.post("/users", status_code=status.HTTP_201_CREATED)
 async def create_user_endpoint(user: UserBase, db: db_dependency):
     return create_user(db, user)
