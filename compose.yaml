@@ -1,0 +1,40 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./backend:/backend
+
+  frontend:
+    build:
+      context: ./frontend/react-ts-app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+
+  database:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    env_file:
+      - ./backend/.env
+    environment:
+      - MYSQL_DATABASE=project-wlc-2
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 4s
+      timeout: 2s
+      retries: 5
+
+volumes:
+  mysql_data:
+    driver: local
