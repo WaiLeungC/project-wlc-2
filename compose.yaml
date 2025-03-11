@@ -31,7 +31,6 @@ services:
       - ./backend/.env
     environment:
       - MYSQL_DATABASE=project-wlc-2
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
