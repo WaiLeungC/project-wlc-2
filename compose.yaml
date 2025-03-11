@@ -17,6 +17,11 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
+      interval: 4s
+      timeout: 2s
+      retries: 5
 
   database:
     image: mysql:8.0
