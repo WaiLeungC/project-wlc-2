@@ -1,13 +1,15 @@
-FROM python:3.13.1
+FROM python:3.13.1-slim
 
 WORKDIR /backend
 
-COPY ./requirements.txt /backend/requirements.txt
+COPY ./requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade -r /backend/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-COPY ./src /backend/src
+COPY ./src .
 
 WORKDIR /backend/src
+
+EXPOSE 8000
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

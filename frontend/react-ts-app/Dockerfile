@@ -1,11 +1,10 @@
-# Development stage
 FROM node:18-alpine AS development
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY . .
 
@@ -13,7 +12,6 @@ EXPOSE 5173
 
 CMD ["npm", "start"]
 
-# Production stage
 FROM node:18-alpine AS build
 
 WORKDIR /app
@@ -26,7 +24,7 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:alpine
+FROM nginx:alpine-slim AS production
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
